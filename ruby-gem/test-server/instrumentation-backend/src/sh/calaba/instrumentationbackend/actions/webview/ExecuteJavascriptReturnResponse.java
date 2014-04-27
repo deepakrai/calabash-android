@@ -10,18 +10,26 @@ import sh.calaba.instrumentationbackend.actions.webview.CalabashChromeClient.Web
 import sh.calaba.instrumentationbackend.query.ast.UIQueryUtils;
 import android.webkit.WebView;
 
-public class ExecuteJavascriptOnWebviewNumber implements Action {
+public class ExecuteJavascriptReturnResponse implements Action {
 
-	@SuppressWarnings({ "unchecked", "rawtypes" })
+    @SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
-	public Result execute(String... args) {
-		final String scriptCode = args[0]; 
-		final Integer webviewNumber = Integer.parseInt(args[1]);
-		List<WebFuture> webResults = (List<WebFuture>) UIQueryUtils.evaluateSyncInMainThread(new Callable() {			
+    public Result execute(String... args) {
+    	
+    	List<WebFuture> webResults = (List<WebFuture>) UIQueryUtils.evaluateSyncInMainThread(new Callable() {			
 			
 			public Object call() throws Exception {
 				
 				List<WebFuture> webResults = new ArrayList();
+				/*for (CalabashChromeClient ccc : CalabashChromeClient.findAndPrepareWebViews()) {
+		    		final WebView webView = ccc.getWebView();
+		            webView.loadUrl("javascript:(function() {" +
+		                    "prompt('calabash:' + document.body.parentNode.innerHTML);" +
+		                    "})()");		            
+		            webResults.add(ccc.getResult());
+		        }
+				return webResults; */
+
 				List<CalabashChromeClient> list = CalabashChromeClient.findAndPrepareWebViews();
 				if (list.isEmpty()) {
 					return webResults;
@@ -34,48 +42,38 @@ public class ExecuteJavascriptOnWebviewNumber implements Action {
 					ccc = list.get(webviewNumber-1);
 
 				WebView webView = ccc.getWebView();
-				final String script = "javascript:(function() {"
-                        + " var r;"
-                        + " try {"
-                        + "  r = (function() {"
-                        + scriptCode + ";"
-                        + "  }());"
-                        + " } catch (e) {"
-                        + "  r = 'Exception: ' + e;"
-                        + " }"
-                        + " prompt('calabash:'+r);"
-                        + "}())";
+				final String script = "javascript:(function() {" +
+		                    "prompt('calabash:' + document.body.parentNode.innerHTML);" +
+		                    "})()"
 
 				System.out.println("execute javascript: " + script);
 
 		        webView.loadUrl(script);
 		        webResults.add(ccc.getResult());				
 				return webResults;
+
+
 				
 			}
 		});
     	
     	List<String> allResults = new ArrayList<String>(webResults.size());
-    	boolean success = true;
     	for (WebFuture f : webResults) {
-    		String result = f.getAsString();
-			allResults.add(result);    		
-			if (result.startsWith("Exception:")) {
-				success = false;
-			}			
+    		allResults.add(f.getAsString());			    		
     	}
     		
     	if (allResults.size() == 0) {
     		return new Result(false, "No WebView found");	
     	}
     	else {
-			return new Result(success, allResults);
-		}
-	}
+    		return new Result(true, allResults);
+    	}
 
-	@Override
-	public String key() {
-		return "execute_javascript_on_webview_number";
-	}
+    }
+
+    @Override
+    public String key() {
+        return "execute_javascript_return_response";
+    }
 
 }
