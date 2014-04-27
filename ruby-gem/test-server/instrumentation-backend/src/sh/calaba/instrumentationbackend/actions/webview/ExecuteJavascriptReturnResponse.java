@@ -44,12 +44,12 @@ public class ExecuteJavascriptReturnResponse implements Action {
 					ccc = list.get(webviewNumber-1);
 
 				WebView webView = ccc.getWebView();
-				final String script = "javascript:(function() {" +
-							" try { " +
-		                    "prompt('calabash:' + " + scriptCode + ");" +
-		                    + " } catch (e) {" +
-		                    " } " +
-		                    "})()";
+				final String script = "javascript:(function() {"
+							+ " try { "
+		                    + "prompt('calabash:' + " + scriptCode + ");"
+		                    + " } catch (e) {" 
+		                    + " } "
+		                    + "})()";
 
 				System.out.println("execute javascript: " + script);
 
