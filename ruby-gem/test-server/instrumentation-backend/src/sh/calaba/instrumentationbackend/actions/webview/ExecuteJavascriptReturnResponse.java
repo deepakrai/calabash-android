@@ -17,7 +17,7 @@ public class ExecuteJavascriptReturnResponse implements Action {
     public Result execute(String... args) {
     	final String scriptCode = args[0]; 
 		final Integer webviewNumber = Integer.parseInt(args[1]);
-    	
+
     	List<WebFuture> webResults = (List<WebFuture>) UIQueryUtils.evaluateSyncInMainThread(new Callable() {			
 			
 			public Object call() throws Exception {
@@ -45,7 +45,10 @@ public class ExecuteJavascriptReturnResponse implements Action {
 
 				WebView webView = ccc.getWebView();
 				final String script = "javascript:(function() {" +
+							" try { " +
 		                    "prompt('calabash:' + " + scriptCode + ");" +
+		                    + " } catch (e) {" +
+		                    " } " +
 		                    "})()";
 
 				System.out.println("execute javascript: " + script);
