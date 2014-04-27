@@ -27,7 +27,7 @@ public class ExecuteJavascriptOnWebviewNumber implements Action {
 					return webResults;
 				}
 				
-				System.out.println("WebView Count --------> " + list.size());
+				System.out.println("WebView Count : " + list.size());
 				CalabashChromeClient ccc = list.get(0);
 
 				if (list.size() >= webviewNumber && webviewNumber > 0 )
@@ -51,7 +51,7 @@ public class ExecuteJavascriptOnWebviewNumber implements Action {
 		        webView.loadUrl(script);
 		        webResults.add(ccc.getResult());				
 				return webResults;
-				
+
 			}
 		});
     	

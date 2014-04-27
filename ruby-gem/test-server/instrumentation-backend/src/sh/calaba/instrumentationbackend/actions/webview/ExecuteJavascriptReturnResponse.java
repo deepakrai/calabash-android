@@ -23,21 +23,12 @@ public class ExecuteJavascriptReturnResponse implements Action {
 			public Object call() throws Exception {
 				
 				List<WebFuture> webResults = new ArrayList();
-				/*for (CalabashChromeClient ccc : CalabashChromeClient.findAndPrepareWebViews()) {
-		    		final WebView webView = ccc.getWebView();
-		            webView.loadUrl("javascript:(function() {" +
-		                    "prompt('calabash:' + document.body.parentNode.innerHTML);" +
-		                    "})()");		            
-		            webResults.add(ccc.getResult());
-		        }
-				return webResults; */
-
 				List<CalabashChromeClient> list = CalabashChromeClient.findAndPrepareWebViews();
 				if (list.isEmpty()) {
 					return webResults;
 				}
 				
-				System.out.println("WebView Count --------> " + list.size());
+				System.out.println("WebView Count : " + list.size());
 				CalabashChromeClient ccc = list.get(0);
 
 				if (list.size() >= webviewNumber && webviewNumber > 0 )
@@ -45,11 +36,11 @@ public class ExecuteJavascriptReturnResponse implements Action {
 
 				WebView webView = ccc.getWebView();
 				final String script = "javascript:(function() {"
-							+ " try { "
-		                    + "prompt('calabash:' + " + scriptCode + ");"
-		                    + " } catch (e) {" 
-		                    + " } "
-		                    + "})()";
+                        + " try { "
+                        + "prompt('calabash:' + " + scriptCode + ");"
+                        + " } catch (e) {" 
+                        + " } "
+                        + "})()";
 
 				System.out.println("execute javascript: " + script);
 
@@ -57,8 +48,6 @@ public class ExecuteJavascriptReturnResponse implements Action {
 		        webResults.add(ccc.getResult());				
 				return webResults;
 
-
-				
 			}
 		});
     	
