@@ -15,6 +15,8 @@ public class ExecuteJavascriptReturnResponse implements Action {
     @SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
     public Result execute(String... args) {
+    	final String scriptCode = args[0]; 
+		final Integer webviewNumber = Integer.parseInt(args[1]);
     	
     	List<WebFuture> webResults = (List<WebFuture>) UIQueryUtils.evaluateSyncInMainThread(new Callable() {			
 			
@@ -43,8 +45,8 @@ public class ExecuteJavascriptReturnResponse implements Action {
 
 				WebView webView = ccc.getWebView();
 				final String script = "javascript:(function() {" +
-		                    "prompt('calabash:' + document.body.parentNode.innerHTML);" +
-		                    "})()"
+		                    "prompt('calabash:' + " + scriptCode + ");" +
+		                    "})()";
 
 				System.out.println("execute javascript: " + script);
 
