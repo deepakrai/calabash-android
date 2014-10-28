@@ -256,6 +256,7 @@ public class HttpServer extends NanoHTTPD {
                 }
                 else if (methodName.equals("execute-javascript")) {
                     String javascript = (String) command.get("javascript");
+                    System.out.println("DRAI javascript javascript javascript javascript" + javascript);
                     List queryResult = new Query(uiQuery).executeQuery().getResult();
                     List<CalabashChromeClient.WebFuture> webFutures = new ArrayList<CalabashChromeClient.WebFuture>();
 
@@ -366,7 +367,7 @@ public class HttpServer extends NanoHTTPD {
 		System.out.println("files: " + files);
 
 		String commandString = params.getProperty("json");
-		System.out.println("command: " + commandString);
+		System.out.println("DRAI DRAI DRAI command: " + commandString);
 		String result = toJson(runCommand(commandString));
 		System.out.println("result:" + result);
 

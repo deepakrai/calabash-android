@@ -41,6 +41,7 @@ public class ExecuteJavascriptReturnResponse implements Action {
 			+ " } "
 			+ "})()";
 
+System.out.println("DRAI DRAI DRAI DRAI DRAI DRAI DRAI DRAI DRAI DRAI DRAI DRAI DRAI DRAI DRAI DRAI DRAI DRAI DRAI DRAI DRAI DRAI DRAI DRAI DRAI DRAI " );
 				System.out.println("execute javascript: " + script);
 
 				webView.loadUrl(script);
