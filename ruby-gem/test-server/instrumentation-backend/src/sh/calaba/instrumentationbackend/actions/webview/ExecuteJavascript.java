@@ -47,7 +47,8 @@ public class ExecuteJavascript implements Action {
 				System.out.println("execute javascript: " + script);
 
 		        webView.loadUrl(script);
-		        webResults.add(ccc.getResult());				
+		        webResults.add(ccc.getResult());	
+
 				return webResults;
 				
 			}
@@ -99,6 +100,8 @@ public class ExecuteJavascript implements Action {
                 }
 
                 Object o = ccc.getResult();
+                System.out.println("DRAI DRAI 2 Executed javascript: " + ((WebFuture)o).getAsString());
+
 
                 return (WebFuture)o;
             }
