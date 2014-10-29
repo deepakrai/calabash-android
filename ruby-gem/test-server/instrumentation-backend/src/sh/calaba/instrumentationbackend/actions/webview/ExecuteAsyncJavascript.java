@@ -41,7 +41,7 @@ public class ExecuteAsyncJavascript implements Action {
 						+ " }"
 						+ "}())";
 
-				System.out.println("execute javascript: " + script);
+				System.out.println("execute javascript3: " + script);
 
 		        webView.loadUrl(script);
 		        webResults.add(ccc.getResult());				
