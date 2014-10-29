@@ -267,6 +267,7 @@ public class HttpServer extends NanoHTTPD {
                         String result;
                         if(object instanceof WebView) {
                             result = ExecuteJavascript.evaluateJavascript((WebView) object, javascript);
+                            System.out.println("DRAI result" + result.toString());
 
                             if (result.startsWith("Exception:")) {
                                 success = false;
