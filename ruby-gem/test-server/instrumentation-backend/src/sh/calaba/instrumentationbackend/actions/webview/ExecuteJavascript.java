@@ -44,7 +44,7 @@ public class ExecuteJavascript implements Action {
                         + " prompt('calabash:'+r);"
                         + "}())";
 
-				System.out.println("execute javascript: " + script);
+				System.out.println("execute javascript1: " + script);
 
 		        webView.loadUrl(script);
 		        webResults.add(ccc.getResult());	
@@ -90,7 +90,7 @@ public class ExecuteJavascript implements Action {
                         + " prompt('calabash:'+r);"
                         + "}())";
 
-                System.out.println("execute javascript: " + script);
+                System.out.println("execute javascript2: " + script);
 
                 if (Build.VERSION.SDK_INT < 19) { // Android 4.4
                     JavaScriptExecuter javaScriptExecuter = new JavaScriptExecuter(webView);
