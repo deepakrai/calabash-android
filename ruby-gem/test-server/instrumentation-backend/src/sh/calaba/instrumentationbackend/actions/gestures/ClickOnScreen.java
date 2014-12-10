@@ -18,6 +18,9 @@ public class ClickOnScreen implements Action {
         
         int width = display.getWidth();
         int height = display.getHeight();
+
+        System.out.println(" PDD : height " + height);
+        System.out.println(" PDD : width " + width);
         
         InstrumentationBackend.solo.clickOnScreen((x/100)*width, (y/100)*height);
         return Result.successResult();
