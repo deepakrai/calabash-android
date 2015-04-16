@@ -3,15 +3,35 @@ package sh.calaba.instrumentationbackend.actions.webview;
 import sh.calaba.instrumentationbackend.Result;
 import sh.calaba.instrumentationbackend.actions.Action;
 import android.webkit.WebView;
+import sh.calaba.instrumentationbackend.query.ast.UIQueryUtils;
+
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.FutureTask;
+import java.util.concurrent.TimeUnit;
 
 public class GetUrl implements Action {
 
 	@Override
 	public Result execute(String... args) {
 		CalabashChromeClient ccc = CalabashChromeClient.findAndPrepareWebViews().get(0);
-		WebView webView = ccc.getWebView();
-		return new Result(true, webView.getUrl());
-	}
+		final WebView webView = ccc.getWebView();
+
+        FutureTask<Result> urlResult = new FutureTask<Result>(new Callable<Result>() {
+            @Override
+            public Result call() throws Exception {
+                return new Result(true, webView.getUrl());
+            }
+        });
+
+        UIQueryUtils.runOnViewThread(webView, urlResult);
+
+        try {
+            return urlResult.get(10, TimeUnit.SECONDS);
+        } catch (Exception e) {
+            return new Result(false, e.getMessage());
+        }
+    }
 
 	@Override
 	public String key() {

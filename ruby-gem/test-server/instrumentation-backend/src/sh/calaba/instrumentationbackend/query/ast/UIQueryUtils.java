@@ -1,19 +1,17 @@
 package sh.calaba.instrumentationbackend.query.ast;
 
-import static sh.calaba.instrumentationbackend.InstrumentationBackend.viewFetcher;
-
+import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.concurrent.Callable;
-import java.util.concurrent.Future;
-import java.util.concurrent.TimeUnit;
+import java.util.concurrent.*;
 import java.util.concurrent.atomic.AtomicReference;
 
 import org.antlr.runtime.tree.CommonTree;
@@ -24,9 +22,13 @@ import sh.calaba.instrumentationbackend.actions.webview.QueryHelper;
 import sh.calaba.instrumentationbackend.query.CompletedFuture;
 import sh.calaba.instrumentationbackend.query.Query;
 import sh.calaba.instrumentationbackend.query.ViewMapper;
+import sh.calaba.instrumentationbackend.query.WebContainer;
 import sh.calaba.instrumentationbackend.query.antlr.UIQueryParser;
+import sh.calaba.org.codehaus.jackson.JsonParseException;
 import sh.calaba.org.codehaus.jackson.map.ObjectMapper;
 import sh.calaba.org.codehaus.jackson.type.TypeReference;
+
+import android.content.res.Resources;
 import android.text.InputType;
 import android.util.Log;
 import android.view.View;
@@ -74,17 +76,22 @@ public class UIQueryUtils {
 	}
 
 	@SuppressWarnings({ "rawtypes" })
-	public static Future webViewSubViews(WebView o) {
+	public static Future webContainerSubViews(WebContainer webContainer) {
 
 		Log.i("Calabash", "About to webViewSubViews");
 
 
-		WebFuture controls = QueryHelper.executeAsyncJavascriptInWebviews(o,
+		WebFuture controls = QueryHelper.executeAsyncJavascriptInWebContainer(webContainer,
 				"calabash.js", "input,button","css");
 
 		return controls;
 
 	}
+
+    public static List uniq(List list) {
+        return new ArrayList(new LinkedHashSet(list));
+    }
+
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public static List parents(Object o) {
@@ -172,7 +179,8 @@ public class UIQueryUtils {
         if (v instanceof Map) {
             Map map = (Map)v;
             Map<String,Integer> viewRect = (Map<String,Integer>)map.get("rect");
-            Map<String,Integer> parentViewRec = ViewMapper.getRectForView((WebView)map.get("webView"));
+            WebContainer webContainer = (WebContainer)map.get("calabashWebContainer");
+            Map<String,Integer> parentViewRec = ViewMapper.getRectForView(webContainer.getView());
 
             return isViewSufficientlyShown(viewRect, parentViewRec);
         } else if (v instanceof View) {
@@ -224,7 +232,6 @@ public class UIQueryUtils {
 		return ViewMapper.getTagForView(view);
 	}
 
-	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public static Future evaluateAsyncInMainThread(final Callable callable) throws Exception {
 
 		final AtomicReference<Future> result = new AtomicReference<Future>();
@@ -264,46 +271,75 @@ public class UIQueryUtils {
 		}
 	}
 
-	@SuppressWarnings({ "unchecked", "rawtypes" })
-	public static List<Map<String, Object>> mapWebViewJsonResponse(
-			final String jsonResponse, final WebView webView) {
-		return (List<Map<String, Object>>) evaluateSyncInMainThread(new Callable() {
+    public static void runOnViewThread(View view, Runnable runnable) {
+        if(view.getHandler() == null || view.getHandler().getLooper() == null || view.getHandler().getLooper().getThread() == Thread.currentThread()) {
+            runnable.run();
+        } else {
+            view.post(runnable);
+        }
+    }
 
-			@Override
-			public Object call() throws Exception {
-				List<Map<String, Object>> parsedResult;
-				try {
-					parsedResult = new ObjectMapper().readValue(jsonResponse,
-							new TypeReference<List<HashMap<String, Object>>>() {
-							});
-					for (Map<String, Object> data : parsedResult) {
-						Map<String, Integer> rect = (Map<String, Integer>) data.get("rect");
-						Map<String, Integer> updatedRect = QueryHelper.translateRectToScreenCoordinates(webView, rect);
-						data.put("rect", updatedRect);
-						data.put("webView", webView);
-					}
-					return parsedResult;
-				} catch (Exception igored) {
-					try {
-						Map resultAsMap = new ObjectMapper().readValue(
-								jsonResponse, new TypeReference<HashMap>() {
-								});
-						// This usually happens in case of error
-						// check this case
-						System.out.println(resultAsMap);
-						String errorMsg = (String) resultAsMap.get("error");
-						System.out.println(errorMsg);
-						return Collections.singletonList(resultAsMap);
-					} catch (Exception e) {
-						e.printStackTrace();
-						throw new RuntimeException(e);
-					}
+    public static Future<List<Map<String, Object>>> mapWebContainerJsonResponseOnViewThread(
+            final String jsonResponse, final WebContainer webContainer) {
+        FutureTask<List<Map<String, Object>>>  future =
+                new FutureTask<List<Map<String, Object>>>(new MapWebContainer(jsonResponse, webContainer));
+        runOnViewThread(webContainer.getView(), future);
+        return future;
+    }
 
-				}
-			}
-		});
+    private static class MapWebContainer implements Callable<List<Map<String, Object>>> {
 
-	}
+        private final String jsonResponse;
+        private final WebContainer webContainer;
+
+        MapWebContainer(String jsonResponse, WebContainer webContainer) {
+            this.jsonResponse = jsonResponse;
+            this.webContainer = webContainer;
+        }
+
+        @Override
+        public List<Map<String, Object>> call() throws Exception {
+            List<Map<String, Object>> parsedResult;
+            try {
+                parsedResult = new ObjectMapper().readValue(jsonResponse,
+                        new TypeReference<List<HashMap<String, Object>>>() {
+                        });
+                for (Map<String, Object> data : parsedResult) {
+                    Map<String, Integer> rect = (Map<String, Integer>) data.get("rect");
+                    Map<String, Integer> updatedRect = webContainer.translateRectToScreenCoordinates(rect);
+                    data.put("rect", updatedRect);
+
+                    View view = webContainer.getView();
+                    String id = ViewMapper.getIdForView(view);
+
+                    data.put("webView", id);
+                    data.put("calabashWebContainer", webContainer);
+                }
+
+                return parsedResult;
+            } catch (Exception ignored) {
+                System.out.println("Exception in call");
+
+                System.out.println("json response: " + jsonResponse);
+
+                try {
+                    Map<String, Object> resultAsMap = new ObjectMapper().readValue(
+                            jsonResponse, new TypeReference<HashMap>() {
+                            });
+                    // This usually happens in case of error
+                    // check this case
+                    System.out.println(resultAsMap);
+                    String errorMsg = (String) resultAsMap.get("error");
+                    System.out.println(errorMsg);
+                    return Collections.singletonList(resultAsMap);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    throw new RuntimeException(e);
+                }
+
+            }
+        }
+    }
 
 	public static Object parseValue(CommonTree val) {
 		switch (val.getType()) {
@@ -340,7 +376,6 @@ public class UIQueryUtils {
 	 */
 	public static Map<?, ?> dump() {
 		Query dummyQuery = new Query("not_used");
-
 		return dumpRecursively(emptyRootView(), dummyQuery.rootViews());
 	}
 
@@ -354,33 +389,71 @@ public class UIQueryUtils {
 	}
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
-	protected static Map<?, ?> dumpRecursively(Map parentView,
-			List children) {
-		ArrayList childrenArray = new ArrayList(32);
+	protected static Map<?, ?> dumpRecursively(Map parentView, List<View> children) {
+        ArrayList childrenArray = new ArrayList(32);
+        List<Integer> parentPath = Collections.unmodifiableList((List<Integer>) parentView.get("path"));
 		for (int i = 0; i < children.size(); i++) {
-			Object view = children.get(i);
-			Map serializedChild = serializeViewToDump(view);
-			List<Integer> childPath = new ArrayList<Integer>(
-					(List) parentView.get("path"));
-			childPath.add(i);
-			serializedChild.put("path", childPath);
-			List childrenList = null;
-			if (view instanceof WebView) {
-				Future webViewSubViews = webViewSubViews((WebView) view);
-				childrenArray.add(webViewSubViews);
-			}
-			else {
-				childrenList = UIQueryUtils.subviews(view);
-				childrenArray.add(dumpRecursively(serializedChild,
-						childrenList));
-			}
+            View view = children.get(i);
+            FutureTask<Map<?, ?>> childrenForChild = new FutureTask<Map<?,?>>(new DumpChild(view, parentPath, i));
+            runOnViewThread(view, childrenForChild);
 
-		}
+            try {
+                childrenArray.add(childrenForChild.get(10, TimeUnit.SECONDS));
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+        }
 
 		parentView.put("children", childrenArray);
 
 		return parentView;
 	}
+
+    private static class DumpChild implements Callable<Map<?,?>> {
+
+        private final View initialView;
+        private final List<Integer> initialParentPath;
+        private final int initialIndex;
+
+        public DumpChild(View view, List<Integer> parentPath, int index) {
+            this.initialView = view;
+            this.initialParentPath = parentPath;
+            this.initialIndex = index;
+        }
+
+        @Override
+        public Map<?,?> call() throws Exception {
+            return doDump(initialView, initialParentPath, initialIndex);
+        }
+
+        private Map createViewMap(View view, List<Integer> path, int i) {
+            Map serializedChild = serializeViewToDump(view);
+            List<Integer> childPath = new ArrayList<Integer>(path);
+            childPath.add(i);
+            serializedChild.put("path", Collections.unmodifiableList(childPath));
+            return serializedChild;
+        }
+
+        private Map<?,?> doDump(View view, List<Integer> parentPath, int index) {
+            Map viewMap = createViewMap(view, parentPath, index);
+
+            if (WebContainer.isValidWebContainer(view)) {
+                Future webViewSubViews = webContainerSubViews(new WebContainer(view));
+                viewMap.put("children", Collections.singletonList(webViewSubViews));
+            }
+            else {
+                // We are on the owning thread, recur directly
+                List<View> childrenList = UIQueryUtils.subviews(view);
+                List<Map<?, ?>> children = new ArrayList<Map<?, ?>>(childrenList.size());
+                List<Integer> path = Collections.unmodifiableList((List<Integer>) viewMap.get("path"));
+                for (int j = 0; j < childrenList.size(); j++) {
+                    children.add(doDump(childrenList.get(j), path, j));
+                }
+                viewMap.put("children", children);
+            }
+            return viewMap;
+        }
+    }
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public static Map<?, ?> dumpByPath(List<Integer> path) {
