@@ -37,8 +37,9 @@ public class AudioControlDetails implements Action {
 		AudioManager myAudioManager;
 		
 		myAudioManager = (AudioManager) InstrumentationBackend.solo.getCurrentActivity().getSystemService(Context.AUDIO_SERVICE);
+		System.out.println("myAudioManager.getStreamVolume(AudioManager.STREAM_MUSIC) " + myAudioManager.getStreamVolume(AudioManager.STREAM_MUSIC));
 		System.out.println("myAudioManager.toString() " + myAudioManager.toString());
-		System.out.println("myAudioManager.toString() " + myAudioManager.toString());
+		System.out.println("myAudioManager.getStreamVolume(AudioManager.STREAM_SYSTEM) " + myAudioManager.getStreamVolume(AudioManager.STREAM_SYSTEM));
 
 
 		return Result.successResult();
