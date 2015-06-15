@@ -141,14 +141,15 @@ public class AudioControlDetails implements Action {
 		MediaSessionManager myMediaSessionManager;
 		myMediaSessionManager = (MediaSessionManager) InstrumentationBackend.solo.getCurrentActivity().getSystemService(Context.MEDIA_SESSION_SERVICE);
 		System.out.println("DRAIAudio myMediaSessionManager " + myMediaSessionManager);
+		System.out.println("DRAIAudio myMediaSessionManager.hashCode() " + myMediaSessionManager.hashCode());
+		System.out.println("DRAIAudio myMediaSessionManager.getClass() " + myMediaSessionManager.getClass());
 		System.out.println("DRAIAudio HELLO " );
-
 
 //		ComponentName notificationListener = null ;
 		List<MediaController> myMediaControllerList =  myMediaSessionManager.getActiveSessions(null);
 		System.out.println("DRAIAudio myMediaControllerList " + myMediaControllerList.toString());
 		System.out.println("DRAIAudio myMediaControllerList " + myMediaControllerList.size());
-		
+
 		for (android.media.session.MediaController i : myMediaControllerList) {
 //			System.out.println("DRAIAudio myMediaControllerList describeContents " + i.describeContents());
 //			System.out.println("DRAIAudio myMediaControllerList flattenToShortString " + i.flattenToShortString());
