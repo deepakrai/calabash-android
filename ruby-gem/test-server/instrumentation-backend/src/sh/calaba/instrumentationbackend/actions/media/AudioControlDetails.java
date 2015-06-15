@@ -141,6 +141,7 @@ public class AudioControlDetails implements Action {
 		MediaSessionManager myMediaSessionManager;
 		myMediaSessionManager = (MediaSessionManager) InstrumentationBackend.solo.getCurrentActivity().getSystemService(Context.MEDIA_SESSION_SERVICE);
 		System.out.println("DRAIAudio myMediaSessionManager " + myMediaSessionManager);
+		System.out.println("DRAIAudio HELLO " );
 
 
 //		ComponentName notificationListener = null ;
