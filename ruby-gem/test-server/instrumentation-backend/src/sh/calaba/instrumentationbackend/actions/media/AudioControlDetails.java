@@ -17,9 +17,15 @@ import android.media.MediaRouter;
 import android.media.*;
 import android.media.session.MediaSessionManager;
 //import android.media.session.SessionManager;
+//import android.content.ComponentName;
+import android.media.session.MediaController;
 
 import android.widget.VideoView;
-import android.widget.MediaController;
+//import android.widget.MediaController;
+
+import java.util.ArrayList;
+import java.util.List;
+
 
 //import android.content.Context;
 //import android.app.AlarmManager;
@@ -137,10 +143,27 @@ public class AudioControlDetails implements Action {
 		System.out.println("DRAIAudio myMediaSessionManager " + myMediaSessionManager);
 
 
-//		List<MediaController> myMediaControllerList =  
+//		ComponentName notificationListener = null ;
+		List<MediaController> myMediaControllerList =  myMediaSessionManager.getActiveSessions(null);
+		System.out.println("DRAIAudio myMediaControllerList " + myMediaControllerList.toString());
+		System.out.println("DRAIAudio myMediaControllerList " + myMediaControllerList.size());
 		
-		
-		
+		for (android.media.session.MediaController i : myMediaControllerList) {
+//			System.out.println("DRAIAudio myMediaControllerList describeContents " + i.describeContents());
+//			System.out.println("DRAIAudio myMediaControllerList flattenToShortString " + i.flattenToShortString());
+//			System.out.println("DRAIAudio myMediaControllerList flattenToString " + i.flattenToString());
+//			System.out.println("DRAIAudio myMediaControllerList getClassName " + i.getClassName());
+			System.out.println("DRAIAudio myMediaControllerList getPackageName " + i.getPackageName());
+//			System.out.println("DRAIAudio myMediaControllerList getShortClassName " + i.getShortClassName());
+			System.out.println("DRAIAudio myMediaControllerList hashCode " + i.hashCode());
+//			System.out.println("DRAIAudio myMediaControllerList toShortString " + i.toShortString());
+			System.out.println("DRAIAudio myMediaControllerList toString " + i.toString());
+		}
+//		for(int i = 0, n = myMediaControllerList.size(); i < n; i++) {
+//	        System.out.println(myMediaControllerList.get(i));
+//	        System.out.println("DRAIAudio myMediaControllerList describeContents " + (myMediaControllerList.get(i)).describeContents());
+//	    }
+
 		return Result.successResult();
 	}
 
