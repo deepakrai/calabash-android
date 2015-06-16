@@ -168,7 +168,7 @@ public class AudioControlDetails implements Action {
 //		myMediaSessionManager.addOnActiveSessionsChangedListener(this, new ComponentName("com.inmobi.richmediatestapp.test", "com.inmobi.richmediatestapp.MyActivity")); 
 
 //		ComponentName notificationListener = null ;
-		List<MediaController> myMediaControllerList =  myMediaSessionManager.getActiveSessions(new ComponentName("com.inmobi.richmediatestapp.test", "com.inmobi.richmediatestapp.MyActivity"));
+		List<MediaController> myMediaControllerList =  myMediaSessionManager.getActiveSessions(new ComponentName("com.inmobi.richmediatestapp", "com.inmobi.richmediatestapp.MyActivity"));
 		System.out.println("DRAIAudio myMediaControllerList " + myMediaControllerList.toString());
 		System.out.println("DRAIAudio myMediaControllerList " + myMediaControllerList.size());
 
