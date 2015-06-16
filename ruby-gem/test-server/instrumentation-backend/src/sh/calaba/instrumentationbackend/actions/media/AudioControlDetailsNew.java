@@ -3,25 +3,19 @@ package src.sh.calaba.instrumentationbackend.actions.media;
 import sh.calaba.instrumentationbackend.InstrumentationBackend;
 import sh.calaba.instrumentationbackend.Result;
 import sh.calaba.instrumentationbackend.actions.Action;
-
+import src.sh.calaba.instrumentationbackend.actions.webview.SuppressWarnings;
 import android.app.Service;
 import android.app.Activity;
 import android.os.Bundle;
 import android.content.Context;
-import android.media.AudioFormat;
-import android.media.AudioRecord;
-import android.media.AudioManager;
-import android.media.MediaPlayer;
-import android.media.MediaRecorder;
-import android.media.MediaRouter;
 import android.media.*;
 import android.media.session.MediaSessionManager;
 //import android.media.session.SessionManager;
 //import android.content.ComponentName;
 import android.media.session.MediaController;
-
 import android.widget.VideoView;
 //import android.widget.MediaController;
+
 
 import java.util.ArrayList;
 import java.util.List;
@@ -94,6 +88,7 @@ import java.util.List;
  */
 public class AudioControlDetailsNew implements Action {
 
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
 	public Result execute(String... args) {
 		
