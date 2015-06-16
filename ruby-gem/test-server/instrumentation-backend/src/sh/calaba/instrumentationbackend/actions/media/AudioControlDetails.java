@@ -1,4 +1,4 @@
-package src.sh.calaba.instrumentationbackend.actions.media;
+package sh.calaba.instrumentationbackend.actions.media;
 
 import sh.calaba.instrumentationbackend.InstrumentationBackend;
 import sh.calaba.instrumentationbackend.Result;
