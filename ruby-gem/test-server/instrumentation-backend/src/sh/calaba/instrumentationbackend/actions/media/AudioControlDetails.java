@@ -164,11 +164,11 @@ public class AudioControlDetails implements Action {
 		System.out.println("DRAIAudio myMediaSessionManager.hashCode() " + myMediaSessionManager.hashCode());
 		System.out.println("DRAIAudio myMediaSessionManager.getClass() " + myMediaSessionManager.getClass());
 		System.out.println("DRAIAudio HELLO1 " );
-		System.out.println("DRAIAudio HELLO3333 " );
+		System.out.println("DRAIAudio HELLO33334 " );
 //		myMediaSessionManager.addOnActiveSessionsChangedListener(this, new ComponentName("com.inmobi.richmediatestapp.test", "com.inmobi.richmediatestapp.MyActivity")); 
 
 //		ComponentName notificationListener = null ;
-		List<MediaController> myMediaControllerList =  myMediaSessionManager.getActiveSessions(new ComponentName("com.inmobi.richmediatestapp", "com.inmobi.richmediatestapp.MyActivity"));
+		List<MediaController> myMediaControllerList =  myMediaSessionManager.getActiveSessions(new ComponentName("com.inmobi.richmediatestapp", "com.inmobi.richmediatestapp.InterstitialActivity"));
 		System.out.println("DRAIAudio myMediaControllerList " + myMediaControllerList.toString());
 		System.out.println("DRAIAudio myMediaControllerList " + myMediaControllerList.size());
 
