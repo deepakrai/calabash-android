@@ -15,14 +15,16 @@ import android.content.Context;
 import android.media.*;
 import android.media.session.MediaSessionManager;
 //import android.media.session.SessionManager;
-//import android.content.ComponentName;
+import android.content.ComponentName;
 import android.media.session.MediaController;
 import android.widget.VideoView;
 //import android.widget.MediaController;
+import android.service.notification.NotificationListenerService;
 
 
 import java.util.ArrayList;
 import java.util.List;
+import 	java.lang.reflect.Method;
 
 
 //import android.content.Context;
@@ -111,11 +113,29 @@ public class AudioControlDetails implements Action {
 		System.out.println("DRAIAudio myAudioManager.getStreamVolume(AudioManager.STREAM_MUSIC) " + myAudioManager.getStreamVolume(AudioManager.STREAM_MUSIC));
 		System.out.println("DRAIAudio myAudioManager.toString() " + myAudioManager.toString());
 		System.out.println("DRAIAudio myAudioManager.getStreamVolume(AudioManager.STREAM_SYSTEM) " + myAudioManager.getStreamVolume(AudioManager.STREAM_SYSTEM));
+		System.out.println("DRAIAudio myAudioManager.getStreamVolume(AudioManager.STREAM_NOTIFICATION) " + myAudioManager.getStreamVolume(AudioManager.STREAM_NOTIFICATION));
 		System.out.println("DRAIAudio myAudioManager.getMode() " + myAudioManager.getMode());
 		System.out.println("DRAIAudio myAudioManager.getProperty(PROPERTY_OUTPUT_SAMPLE_RATE) " + myAudioManager.getProperty("PROPERTY_OUTPUT_SAMPLE_RATE"));
 		System.out.println("DRAIAudio myAudioManager.getProperty(PROPERTY_OUTPUT_FRAMES_PER_BUFFER) " + myAudioManager.getProperty("PROPERTY_OUTPUT_FRAMES_PER_BUFFER"));
 		System.out.println("DRAIAudio myAudioManager.getParameters(AUDIO_SERVICE) " + myAudioManager.getParameters(Context.AUDIO_SERVICE));
 
+		
+		try {
+	        Class c = MediaPlayer.class;
+	        short [] outData = new short[1024];
+	        int kind = 0;
+	        Method m = c.getMethod("snoop", outData.getClass(), Integer.TYPE);
+	        m.setAccessible(true);
+	        m.invoke(c, outData, kind);
+	        System.out.println("DRAIAudio snoop 0 ");
+	    } catch (Exception e) {
+	        // TODO Auto-generated catch block
+	        e.printStackTrace();
+	        System.out.println("DRAIAudio snoop 1 ");
+//	        return 1;
+	    }
+		
+		
 //		MediaPlayer myMediaPlayer;		
 //		myMediaPlayer = (MediaPlayer) InstrumentationBackend.solo.getCurrentActivity().getSystemService(Context.MEDIA_SESSION_SERVICE);
 		
@@ -145,9 +165,10 @@ public class AudioControlDetails implements Action {
 		System.out.println("DRAIAudio myMediaSessionManager.getClass() " + myMediaSessionManager.getClass());
 		System.out.println("DRAIAudio HELLO1 " );
 		System.out.println("DRAIAudio HELLO3333 " );
+//		myMediaSessionManager.addOnActiveSessionsChangedListener(this, new ComponentName("com.inmobi.richmediatestapp.test", "com.inmobi.richmediatestapp.MyActivity")); 
 
 //		ComponentName notificationListener = null ;
-		List<MediaController> myMediaControllerList =  myMediaSessionManager.getActiveSessions(null);
+		List<MediaController> myMediaControllerList =  myMediaSessionManager.getActiveSessions(new ComponentName("com.inmobi.richmediatestapp.test", "com.inmobi.richmediatestapp.MyActivity"));
 		System.out.println("DRAIAudio myMediaControllerList " + myMediaControllerList.toString());
 		System.out.println("DRAIAudio myMediaControllerList " + myMediaControllerList.size());
 
