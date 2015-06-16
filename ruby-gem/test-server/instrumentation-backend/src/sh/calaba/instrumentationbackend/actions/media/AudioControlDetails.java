@@ -144,7 +144,7 @@ public class AudioControlDetails implements Action {
 		System.out.println("DRAIAudio myMediaSessionManager.hashCode() " + myMediaSessionManager.hashCode());
 		System.out.println("DRAIAudio myMediaSessionManager.getClass() " + myMediaSessionManager.getClass());
 		System.out.println("DRAIAudio HELLO1 " );
-		System.out.println("DRAIAudio HELLO " );
+		System.out.println("DRAIAudio HELLO3333 " );
 
 //		ComponentName notificationListener = null ;
 		List<MediaController> myMediaControllerList =  myMediaSessionManager.getActiveSessions(null);
