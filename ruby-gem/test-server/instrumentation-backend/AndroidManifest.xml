@@ -11,6 +11,14 @@
         <uses-library android:name="com.google.android.maps" android:required="false" />
     </application>
 
+    <service android:name=".NotificationListener"
+    android:permission="android.permission.BIND_NOTIFICATION_LISTENER_SERVICE"
+    android:enabled="true" android:exported="true">
+    <intent-filter>
+        <action android:name="android.service.notification.NotificationListenerService" />
+    </intent-filter>
+</service>
+
     <instrumentation
         android:name="android.test.InstrumentationTestRunner"
         android:targetPackage="sh.calaba" />

@@ -118,6 +118,10 @@ public class AudioControlDetails implements Action {
 		System.out.println("DRAIAudio myAudioManager.getProperty(PROPERTY_OUTPUT_SAMPLE_RATE) " + myAudioManager.getProperty("PROPERTY_OUTPUT_SAMPLE_RATE"));
 		System.out.println("DRAIAudio myAudioManager.getProperty(PROPERTY_OUTPUT_FRAMES_PER_BUFFER) " + myAudioManager.getProperty("PROPERTY_OUTPUT_FRAMES_PER_BUFFER"));
 		System.out.println("DRAIAudio myAudioManager.getParameters(AUDIO_SERVICE) " + myAudioManager.getParameters(Context.AUDIO_SERVICE));
+		System.out.println("DRAIAudio myAudioManager.isMusicActive() " + myAudioManager.isMusicActive());
+		System.out.println("DRAIAudio myAudioManager.isSpeakerphoneOn() " + myAudioManager.isSpeakerphoneOn());
+		System.out.println("DRAIAudio myAudioManager.isVolumeFixed() " + myAudioManager.isVolumeFixed());
+		
 
 		
 		try {
@@ -164,11 +168,12 @@ public class AudioControlDetails implements Action {
 		System.out.println("DRAIAudio myMediaSessionManager.hashCode() " + myMediaSessionManager.hashCode());
 		System.out.println("DRAIAudio myMediaSessionManager.getClass() " + myMediaSessionManager.getClass());
 		System.out.println("DRAIAudio HELLO1 " );
-		System.out.println("DRAIAudio HELLO33334 " );
+		System.out.println("DRAIAudio HELLO333345 " );
 //		myMediaSessionManager.addOnActiveSessionsChangedListener(this, new ComponentName("com.inmobi.richmediatestapp.test", "com.inmobi.richmediatestapp.MyActivity")); 
 
 //		ComponentName notificationListener = null ;
 		List<MediaController> myMediaControllerList =  myMediaSessionManager.getActiveSessions(new ComponentName("com.inmobi.richmediatestapp", "com.inmobi.richmediatestapp.InterstitialActivity"));
+//		myMediaSessionManager.addOnActiveSessionsChangedListener(null, null);
 		System.out.println("DRAIAudio myMediaControllerList " + myMediaControllerList.toString());
 		System.out.println("DRAIAudio myMediaControllerList " + myMediaControllerList.size());
 
