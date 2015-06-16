@@ -134,6 +134,7 @@ public class AudioControlDetails implements Action {
 		VideoView myVideoView; 
 //		myVideoView = (VideoView) InstrumentationBackend.solo.getCurrentActivity().getSystemService(Context.);
 		
+		System.out.println("DRAIAudio HELLO2 " );
 		
 		MediaPlayer myMediaPlayer;
 //		MediaController mMedia = new MediaController(this);
