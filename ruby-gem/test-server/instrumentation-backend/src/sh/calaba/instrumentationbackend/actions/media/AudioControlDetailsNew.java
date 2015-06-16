@@ -1,4 +1,4 @@
-package sh.calaba.instrumentationbackend.actions.media;
+package src.sh.calaba.instrumentationbackend.actions.media;
 
 import sh.calaba.instrumentationbackend.InstrumentationBackend;
 import sh.calaba.instrumentationbackend.Result;
@@ -92,7 +92,7 @@ import java.util.List;
  * 
  * @author Juan Delgado (juan@ustwo.co.uk)
  */
-public class AudioControlDetails implements Action {
+public class AudioControlDetailsNew implements Action {
 
 	@Override
 	public Result execute(String... args) {
@@ -131,7 +131,7 @@ public class AudioControlDetails implements Action {
 //		Context.MEDIA_ROUTER_SERVICE
 //		MediaController myMediaController;
 		
-		VideoView myVideoView; 
+//		VideoView myVideoView; 
 //		myVideoView = (VideoView) InstrumentationBackend.solo.getCurrentActivity().getSystemService(Context.);
 		
 		System.out.println("DRAIAudio HELLO2 " );
@@ -173,6 +173,6 @@ public class AudioControlDetails implements Action {
 
 	@Override
 	public String key() {
-		return "audio_control_details";
+		return "audio_control_details_new";
 	}
 }
