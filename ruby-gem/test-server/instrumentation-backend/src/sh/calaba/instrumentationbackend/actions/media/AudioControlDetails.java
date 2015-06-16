@@ -90,7 +90,7 @@ import java.util.List;
  * 
  * @author Juan Delgado (juan@ustwo.co.uk)
  */
-public class AudioControlDetailsNew implements Action {
+public class AudioControlDetails implements Action {
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
@@ -172,6 +172,6 @@ public class AudioControlDetailsNew implements Action {
 
 	@Override
 	public String key() {
-		return "audio_control_details_new";
+		return "audio_control_details";
 	}
 }
