@@ -192,6 +192,7 @@ public class AudioControlDetails implements Action {
 		    }
 
 		try {
+			ComponentName cm = new ComponentName("com.inmobi.richmediatestapp", "com.inmobi.richmediatestapp.InterstitialActivity");
 			List<MediaController> controllers1 = myMediaSessionManager.getActiveSessions(new ComponentName("com.inmobi.richmediatestapp", "com.inmobi.richmediatestapp.InterstitialActivity"));
 			System.out.println("DRAIAudio controllers1.size()" + controllers1.size() );
 		 } catch (Exception e) {
