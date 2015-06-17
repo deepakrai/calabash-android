@@ -177,9 +177,29 @@ public class AudioControlDetails implements Action {
 		System.out.println("DRAIAudio myMediaSessionManager " + myMediaSessionManager);
 		System.out.println("DRAIAudio myMediaSessionManager.hashCode() " + myMediaSessionManager.hashCode());
 		System.out.println("DRAIAudio myMediaSessionManager.getClass() " + myMediaSessionManager.getClass());
-		System.out.println("DRAIAudio myMediaSessionManager.getActiveSessions(null) " + myMediaSessionManager.getActiveSessions(null));
+//		System.out.println("DRAIAudio myMediaSessionManager.getActiveSessions(null) " + myMediaSessionManager.getActiveSessions(null));
 		System.out.println("DRAIAudio HELLO1 " );
-		System.out.println("DRAIAudio HELLO3333456 " );
+		System.out.println("DRAIAudio HELLO33334567 " );
+		
+		try {
+			List<MediaController> controllers = myMediaSessionManager.getActiveSessions(new ComponentName("com.inmobi.richmediatestapp.test", NotificationListener.class.toString()));
+			System.out.println("DRAIAudio controllers.size()" + controllers.size() );
+		 } catch (Exception e) {
+		        // TODO Auto-generated catch block
+		        e.printStackTrace();
+		        System.out.println("DRAIAudio controllers 1 ");
+//		        return 1;
+		    }
+
+		try {
+			List<MediaController> controllers1 = myMediaSessionManager.getActiveSessions(new ComponentName("com.inmobi.richmediatestapp", NotificationListener.class.toString()));
+			System.out.println("DRAIAudio controllers1.size()" + controllers1.size() );
+		 } catch (Exception e) {
+		        // TODO Auto-generated catch block
+		        e.printStackTrace();
+		        System.out.println("DRAIAudio controllers 2 ");
+//		        return 1;
+		    }
 		
 //		MediaSession mSession = myMediaSessionManager.createSession("sample session");
 //		Token mToken = mSession.getSessionToken();
