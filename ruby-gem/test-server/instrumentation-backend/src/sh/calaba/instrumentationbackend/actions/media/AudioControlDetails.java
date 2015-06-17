@@ -20,6 +20,8 @@ import android.media.session.MediaController;
 import android.widget.VideoView;
 //import android.widget.MediaController;
 import android.service.notification.NotificationListenerService;
+import android.media.session.MediaSession;
+import android.media.session.MediaSession.Token;
 
 
 import java.util.ArrayList;
@@ -175,8 +177,12 @@ public class AudioControlDetails implements Action {
 		System.out.println("DRAIAudio myMediaSessionManager " + myMediaSessionManager);
 		System.out.println("DRAIAudio myMediaSessionManager.hashCode() " + myMediaSessionManager.hashCode());
 		System.out.println("DRAIAudio myMediaSessionManager.getClass() " + myMediaSessionManager.getClass());
+		System.out.println("DRAIAudio myMediaSessionManager.getActiveSessions(null) " + myMediaSessionManager.getActiveSessions(null));
 		System.out.println("DRAIAudio HELLO1 " );
-		System.out.println("DRAIAudio HELLO333345 " );
+		System.out.println("DRAIAudio HELLO3333456 " );
+		
+//		MediaSession mSession = myMediaSessionManager.createSession("sample session");
+//		Token mToken = mSession.getSessionToken();
 //		myMediaSessionManager.addOnActiveSessionsChangedListener(this, new ComponentName("com.inmobi.richmediatestapp.test", "com.inmobi.richmediatestapp.MyActivity")); 
 
 //		ComponentName notificationListener = null ;
