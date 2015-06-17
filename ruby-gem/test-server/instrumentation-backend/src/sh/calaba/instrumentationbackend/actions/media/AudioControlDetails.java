@@ -182,7 +182,7 @@ public class AudioControlDetails implements Action {
 		System.out.println("DRAIAudio HELLO33334567 " );
 		
 		try {
-			List<MediaController> controllers = myMediaSessionManager.getActiveSessions(new ComponentName("com.inmobi.richmediatestapp.test", NotificationListener.class.toString()));
+			List<MediaController> controllers = myMediaSessionManager.getActiveSessions(new ComponentName("com.inmobi.richmediatestapp.test", "com.inmobi.richmediatestapp.InterstitialActivity"));
 			System.out.println("DRAIAudio controllers.size()" + controllers.size() );
 		 } catch (Exception e) {
 		        // TODO Auto-generated catch block
@@ -192,7 +192,7 @@ public class AudioControlDetails implements Action {
 		    }
 
 		try {
-			List<MediaController> controllers1 = myMediaSessionManager.getActiveSessions(new ComponentName("com.inmobi.richmediatestapp", NotificationListener.class.toString()));
+			List<MediaController> controllers1 = myMediaSessionManager.getActiveSessions(new ComponentName("com.inmobi.richmediatestapp", "com.inmobi.richmediatestapp.InterstitialActivity"));
 			System.out.println("DRAIAudio controllers1.size()" + controllers1.size() );
 		 } catch (Exception e) {
 		        // TODO Auto-generated catch block
