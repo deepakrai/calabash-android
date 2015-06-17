@@ -49,7 +49,7 @@
     <uses-permission android:name="com.motorola.motocare.INTERNAL_ACTION"/>
     <uses-permission android:name="com.motorola.ccc.plm.permission.READPROVIDER"/>
     <uses-permission android:name="android.permission.MODIFY_PHONE_STATE"/>
-    <uses-permission android:name="com.android.email.permission.ACCESS_PROVIDER">
+    <uses-permission android:name="com.android.email.permission.ACCESS_PROVIDER"/>
 
 
 </manifest>
