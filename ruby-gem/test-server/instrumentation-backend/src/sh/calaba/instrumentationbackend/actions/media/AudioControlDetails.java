@@ -140,8 +140,16 @@ public class AudioControlDetails implements Action {
 	    }
 		
 		
-//		MediaPlayer myMediaPlayer;		
-//		myMediaPlayer = (MediaPlayer) InstrumentationBackend.solo.getCurrentActivity().getSystemService(Context.MEDIA_SESSION_SERVICE);
+		MediaPlayer myMediaPlayer;		
+		myMediaPlayer = (MediaPlayer) InstrumentationBackend.solo.getCurrentActivity().getSystemService(Context.MEDIA_SESSION_SERVICE);
+		System.out.println("DRAIAudio myMediaPlayer.isPlaying " + myMediaPlayer.isPlaying());
+		System.out.println("DRAIAudio myMediaPlayer.getAudioSessionId " + myMediaPlayer.getAudioSessionId());
+		System.out.println("DRAIAudio myMediaPlayer.getCurrentPosition " + myMediaPlayer.getCurrentPosition());
+		System.out.println("DRAIAudio myMediaPlayer.getDuration " + myMediaPlayer.getDuration());
+		System.out.println("DRAIAudio myMediaPlayer.getVideoHeight " + myMediaPlayer.getVideoHeight());
+		System.out.println("DRAIAudio myMediaPlayer.getVideoWidth " + myMediaPlayer.getVideoWidth());
+		System.out.println("DRAIAudio myMediaPlayer.isLooping " + myMediaPlayer.isLooping());
+		System.out.println("DRAIAudio myMediaPlayer.getTrackInfo " + myMediaPlayer.getTrackInfo());
 		
 		MediaRouter myMediaRouter;
 		myMediaRouter = (MediaRouter) InstrumentationBackend.solo.getCurrentActivity().getSystemService(Context.MEDIA_ROUTER_SERVICE);
@@ -159,7 +167,7 @@ public class AudioControlDetails implements Action {
 		
 		System.out.println("DRAIAudio HELLO2 " );
 		
-		MediaPlayer myMediaPlayer;
+//		MediaPlayer myMediaPlayer;
 //		MediaController mMedia = new MediaController(this);
 //		mMedia.ge
 		MediaSessionManager myMediaSessionManager;
