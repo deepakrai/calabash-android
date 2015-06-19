@@ -161,9 +161,13 @@ public class AudioControlDetails implements Action {
 		System.out.println("DRAIAudio audioOutput.getSamplingRate();" + audioOutput.getSamplingRate());
 		System.out.println("DRAIAudio audioOutput.getScalingMode();" + audioOutput.getScalingMode());
 		System.out.println("DRAIAudio audioOutput.getMeasurementMode();" + audioOutput.getMeasurementMode());
+		System.out.println("DRAIAudio visualizedTrack" + visualizedTrack ) ;
 
 		byte[] data = new byte[audioOutput.getCaptureSize()];
+		audioOutput.getWaveForm(data);
+		System.out.println("DRAIAudio getWaveForm data" + data ) ;
 		audioOutput.getFft(data);
+		System.out.println("DRAIAudio getFft data" + data ) ;
 		int energy = computeEnergy(data, true);
 		System.out.println("DRAIAudio energy" + energy);
 		
