@@ -24,6 +24,11 @@ import android.media.session.MediaSession;
 import android.media.session.MediaSession.Token;
 import android.net.rtp.AudioGroup;
 import 	android.net.rtp.AudioStream;
+import android.media.AudioAttributes;
+import android.media.AudioManager;
+//import android.media.AudioService;
+//import android.media.AudioSystem;
+import android.media.audiofx.Visualizer;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -125,6 +130,8 @@ public class AudioControlDetails implements Action {
 		System.out.println("DRAIAudio myAudioManager.isMusicActive() " + myAudioManager.isMusicActive());
 		System.out.println("DRAIAudio myAudioManager.isSpeakerphoneOn() " + myAudioManager.isSpeakerphoneOn());
 		System.out.println("DRAIAudio myAudioManager.isVolumeFixed() " + myAudioManager.isVolumeFixed());
+//		System.out.println("DRAIAudio AudioSystem.getNumStreamTypes() " + AudioSystem.getNumStreamTypes() ) ;
+		System.out.println("DRAIAudio Visualizer.getCaptureSizeRange();" + Visualizer.getCaptureSizeRange());
 		
 		System.out.println("DRAIAudio HELLLOOOO1111111 ");
 		AudioGroup myAudioGroup = new AudioGroup();
