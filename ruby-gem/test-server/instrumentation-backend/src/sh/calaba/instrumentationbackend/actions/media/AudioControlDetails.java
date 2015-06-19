@@ -22,11 +22,12 @@ import android.widget.VideoView;
 import android.service.notification.NotificationListenerService;
 import android.media.session.MediaSession;
 import android.media.session.MediaSession.Token;
-
+import android.net.rtp.AudioGroup;
 
 import java.util.ArrayList;
 import java.util.List;
 import 	java.lang.reflect.Method;
+
 
 
 //import android.content.Context;
@@ -124,6 +125,11 @@ public class AudioControlDetails implements Action {
 		System.out.println("DRAIAudio myAudioManager.isSpeakerphoneOn() " + myAudioManager.isSpeakerphoneOn());
 		System.out.println("DRAIAudio myAudioManager.isVolumeFixed() " + myAudioManager.isVolumeFixed());
 		
+		
+		AudioGroup myAudioGroup = new AudioGroup();
+		System.out.println("DRAIAudio myAudioGroup.getMode() " + myAudioGroup.getMode());
+		System.out.println("DRAIAudio myAudioGroup.getStreams() " + myAudioGroup.getStreams());
+		
 
 		
 		try {
@@ -193,7 +199,7 @@ public class AudioControlDetails implements Action {
 
 		try {
 			ComponentName cm = new ComponentName("com.inmobi.richmediatestapp", "com.inmobi.richmediatestapp.InterstitialActivity");
-			List<MediaController> controllers1 = myMediaSessionManager.getActiveSessions(new ComponentName("com.inmobi.richmediatestapp", "com.inmobi.richmediatestapp.InterstitialActivity"));
+			List<MediaController> controllers1 = myMediaSessionManager.getActiveSessions(new ComponentName("sh.calaba.instrumentationbackend.CalabashInstrumentationTestRunner", "com.inmobi.richmediatestapp.InterstitialActivity"));
 			System.out.println("DRAIAudio controllers1.size()" + controllers1.size() );
 		 } catch (Exception e) {
 		        // TODO Auto-generated catch block
