@@ -161,7 +161,30 @@ public class AudioControlDetails implements Action {
 		System.out.println("DRAIAudio audioOutput.getSamplingRate();" + audioOutput.getSamplingRate());
 		System.out.println("DRAIAudio audioOutput.getScalingMode();" + audioOutput.getScalingMode());
 		System.out.println("DRAIAudio audioOutput.getMeasurementMode();" + audioOutput.getMeasurementMode());
+		
 		System.out.println("DRAIAudio visualizedTrack" + visualizedTrack ) ;
+		System.out.println("DRAIAudio visualizedTrack.getPlayState" + visualizedTrack.getPlayState() ) ;
+		System.out.println("DRAIAudio visualizedTrack.getChannelCount()" + visualizedTrack.getChannelCount() ) ;
+		System.out.println("DRAIAudio visualizedTrack.getAudioFormat" + visualizedTrack.getAudioFormat() ) ;
+		System.out.println("DRAIAudio visualizedTrack.	getAudioSessionId" + visualizedTrack.getAudioSessionId() ) ;
+		System.out.println("DRAIAudio visualizedTrack.getChannelCount" + visualizedTrack.getChannelCount() ) ;
+		System.out.println("DRAIAudio visualizedTrack.getChannelConfiguration" + visualizedTrack.getChannelConfiguration() ) ;
+		System.out.println("DRAIAudio visualizedTrack.getMaxVolume" + visualizedTrack.getMaxVolume() ) ;
+		System.out.println("DRAIAudio visualizedTrack.getMinVolume" + visualizedTrack.getMinVolume() ) ;
+		System.out.println("DRAIAudio visualizedTrack.getPlaybackHeadPosition" + visualizedTrack.getPlaybackHeadPosition() ) ;
+		System.out.println("DRAIAudio visualizedTrack.getPlaybackRate" + visualizedTrack.getPlaybackRate() ) ;
+		System.out.println("DRAIAudio visualizedTrack.getPositionNotificationPeriod" + visualizedTrack.getPositionNotificationPeriod() ) ;
+		System.out.println("DRAIAudio visualizedTrack.getSampleRate" + visualizedTrack.getSampleRate() ) ;
+		System.out.println("DRAIAudio visualizedTrack.getState" + visualizedTrack.getState() ) ;
+		System.out.println("DRAIAudio visualizedTrack.getStreamType" + visualizedTrack.getStreamType() ) ;
+		System.out.println("DRAIAudio visualizedTrack.getState" + visualizedTrack.getState() ) ;
+		System.out.println("DRAIAudio visualizedTrack.getState" + visualizedTrack.getState() ) ;
+		System.out.println("DRAIAudio visualizedTrack.getState" + visualizedTrack.getState() ) ;
+		System.out.println("DRAIAudio visualizedTrack.getState" + visualizedTrack.getState() ) ;
+		
+		
+		
+
 
 		byte[] data = new byte[audioOutput.getCaptureSize()];
 		audioOutput.getWaveForm(data);
