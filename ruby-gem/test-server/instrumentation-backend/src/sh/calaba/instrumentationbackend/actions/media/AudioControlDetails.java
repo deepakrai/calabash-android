@@ -129,7 +129,7 @@ public class AudioControlDetails implements Action {
 		System.out.println("DRAIAudio myAudioManager.getParameters(AUDIO_SERVICE) " + myAudioManager.getParameters(Context.AUDIO_SERVICE));
 		System.out.println("DRAIAudio myAudioManager.isMusicActive() " + myAudioManager.isMusicActive());
 		System.out.println("DRAIAudio myAudioManager.isSpeakerphoneOn() " + myAudioManager.isSpeakerphoneOn());
-		System.out.println("DRAIAudio myAudioManager.isVolumeFixed() " + myAudioManager.isVolumeFixed());
+//		System.out.println("DRAIAudio myAudioManager.isVolumeFixed() " + myAudioManager.isVolumeFixed());
 //		System.out.println("DRAIAudio AudioSystem.getNumStreamTypes() " + AudioSystem.getNumStreamTypes() ) ;
 		System.out.println("DRAIAudio Visualizer.getCaptureSizeRange();" + Visualizer.getCaptureSizeRange());
 		
