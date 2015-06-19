@@ -126,7 +126,7 @@ public class AudioControlDetails implements Action {
 		System.out.println("DRAIAudio myAudioManager.isSpeakerphoneOn() " + myAudioManager.isSpeakerphoneOn());
 		System.out.println("DRAIAudio myAudioManager.isVolumeFixed() " + myAudioManager.isVolumeFixed());
 		
-		
+		System.out.println("DRAIAudio HELLLOOOO1111111 ");
 		AudioGroup myAudioGroup = new AudioGroup();
 		System.out.println("DRAIAudio myAudioGroup.getMode() " + myAudioGroup.getMode());
 		System.out.println("DRAIAudio myAudioGroup.getStreams() " + myAudioGroup.getStreams());
