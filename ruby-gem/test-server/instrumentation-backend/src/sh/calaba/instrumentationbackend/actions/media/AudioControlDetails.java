@@ -130,6 +130,8 @@ public class AudioControlDetails implements Action {
 		AudioGroup myAudioGroup = new AudioGroup();
 		System.out.println("DRAIAudio myAudioGroup.getMode() " + myAudioGroup.getMode());
 		System.out.println("DRAIAudio myAudioGroup.getStreams() " + myAudioGroup.getStreams());
+		System.out.println("DRAIAudio myAudioGroup.getStreams().length " + myAudioGroup.getStreams().length);
+		System.out.println("DRAIAudio HELLLOOOO ");
 		
 		AudioStream[] myAudioStream = myAudioGroup.getStreams();
 		System.out.println("DRAIAudio myAudioStream.length " + myAudioStream.length);
