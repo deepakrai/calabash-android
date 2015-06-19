@@ -23,6 +23,7 @@ import android.service.notification.NotificationListenerService;
 import android.media.session.MediaSession;
 import android.media.session.MediaSession.Token;
 import android.net.rtp.AudioGroup;
+import 	android.net.rtp.AudioStream;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -130,6 +131,12 @@ public class AudioControlDetails implements Action {
 		System.out.println("DRAIAudio myAudioGroup.getMode() " + myAudioGroup.getMode());
 		System.out.println("DRAIAudio myAudioGroup.getStreams() " + myAudioGroup.getStreams());
 		
+		AudioStream[] myAudioStream = myAudioGroup.getStreams();
+		System.out.println("DRAIAudio myAudioStream.length " + myAudioStream.length);
+		 for (int i = 0; i < myAudioStream.length; i++) {
+			 System.out.println("DRAIAudio myAudioStream[i].getCodec() " + myAudioStream[i].getCodec());
+			 System.out.println("DRAIAudio myAudioStream[i].isBusy() " + myAudioStream[i].isBusy());
+	      }
 
 		
 		try {
