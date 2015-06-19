@@ -129,9 +129,23 @@ public class AudioControlDetails implements Action {
 		System.out.println("DRAIAudio myAudioManager.getParameters(AUDIO_SERVICE) " + myAudioManager.getParameters(Context.AUDIO_SERVICE));
 		System.out.println("DRAIAudio myAudioManager.isMusicActive() " + myAudioManager.isMusicActive());
 		System.out.println("DRAIAudio myAudioManager.isSpeakerphoneOn() " + myAudioManager.isSpeakerphoneOn());
-//		System.out.println("DRAIAudio myAudioManager.isVolumeFixed() " + myAudioManager.isVolumeFixed()); // Works on some device
+		System.out.println("DRAIAudio myAudioManager.isVolumeFixed() " + myAudioManager.isVolumeFixed()); // Works on some device
 //		System.out.println("DRAIAudio AudioSystem.getNumStreamTypes() " + AudioSystem.getNumStreamTypes()); // Works on some device
+		
 		System.out.println("DRAIAudio Visualizer.getCaptureSizeRange();" + Visualizer.getCaptureSizeRange());
+		System.out.println("DRAIAudio Visualizer.getCaptureSizeRange().length;" + Visualizer.getCaptureSizeRange().length);
+		
+		int[] intVis = Visualizer.getCaptureSizeRange();
+		for (int i=0 ; i < intVis.length ; i++  ) {
+			System.out.println("DRAIAudio intVis" + intVis[i] );
+		}
+		
+		
+		
+		
+
+		
+		
 		
 		Visualizer audioOutput = null;
 	    AudioTrack visualizedTrack = null;
@@ -141,6 +155,13 @@ public class AudioControlDetails implements Action {
         System.out.println("DRAIAudio  minBufferSize " + minBufferSize);
         System.out.println("DRAIAudio  minBufferSize " + minBufferSize);
         System.out.println("DRAIAudio  audioOutput getSamplingRate " + audioOutput.getSamplingRate());
+        System.out.println("DRAIAudio audioOutput.getCaptureSize();" + audioOutput.getCaptureSize());
+		System.out.println("DRAIAudio audioOutput.getEnabled();" + audioOutput.getEnabled());
+		System.out.println("DRAIAudio audioOutput.getMaxCaptureRate();" + audioOutput.getMaxCaptureRate());
+		System.out.println("DRAIAudio audioOutput.getSamplingRate();" + audioOutput.getSamplingRate());
+		System.out.println("DRAIAudio audioOutput.getScalingMode();" + audioOutput.getScalingMode());
+		System.out.println("DRAIAudio audioOutput.getMeasurementMode();" + audioOutput.getMeasurementMode());
+
 
         
 		
