@@ -129,9 +129,20 @@ public class AudioControlDetails implements Action {
 		System.out.println("DRAIAudio myAudioManager.getParameters(AUDIO_SERVICE) " + myAudioManager.getParameters(Context.AUDIO_SERVICE));
 		System.out.println("DRAIAudio myAudioManager.isMusicActive() " + myAudioManager.isMusicActive());
 		System.out.println("DRAIAudio myAudioManager.isSpeakerphoneOn() " + myAudioManager.isSpeakerphoneOn());
-//		System.out.println("DRAIAudio myAudioManager.isVolumeFixed() " + myAudioManager.isVolumeFixed());
-//		System.out.println("DRAIAudio AudioSystem.getNumStreamTypes() " + AudioSystem.getNumStreamTypes() ) ;
+//		System.out.println("DRAIAudio myAudioManager.isVolumeFixed() " + myAudioManager.isVolumeFixed()); // Works on some device
+//		System.out.println("DRAIAudio AudioSystem.getNumStreamTypes() " + AudioSystem.getNumStreamTypes()); // Works on some device
 		System.out.println("DRAIAudio Visualizer.getCaptureSizeRange();" + Visualizer.getCaptureSizeRange());
+		
+		Visualizer audioOutput = null;
+	    AudioTrack visualizedTrack = null;
+		int minBufferSize = AudioTrack.getMinBufferSize(Visualizer.getMaxCaptureRate(), AudioFormat.CHANNEL_OUT_MONO, AudioFormat.ENCODING_PCM_8BIT);
+        visualizedTrack = new AudioTrack(AudioManager.STREAM_MUSIC, Visualizer.getMaxCaptureRate(), AudioFormat.CHANNEL_OUT_MONO, AudioFormat.ENCODING_PCM_8BIT, minBufferSize, AudioTrack.MODE_STREAM);
+        audioOutput = new Visualizer(0); 
+        System.out.println("DRAIAudio  minBufferSize " + minBufferSize);
+        System.out.println("DRAIAudio  minBufferSize " + minBufferSize);
+        System.out.println("DRAIAudio  audioOutput getSamplingRate " + audioOutput.getSamplingRate());
+
+        
 		
 		System.out.println("DRAIAudio HELLLOOOO1111111 ");
 		AudioGroup myAudioGroup = new AudioGroup();
