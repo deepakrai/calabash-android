@@ -162,6 +162,11 @@ public class AudioControlDetails implements Action {
 		System.out.println("DRAIAudio audioOutput.getScalingMode();" + audioOutput.getScalingMode());
 		System.out.println("DRAIAudio audioOutput.getMeasurementMode();" + audioOutput.getMeasurementMode());
 
+		byte[] data = new byte[audioOutput.getCaptureSize()];
+		audioOutput.getFft(data);
+		int energy = computeEnergy(data, true);
+		System.out.println("DRAIAudio energy" + energy);
+		
 
         
 		
@@ -179,6 +184,7 @@ public class AudioControlDetails implements Action {
 			 System.out.println("DRAIAudio myAudioStream[i].isBusy() " + myAudioStream[i].isBusy());
 	      }
 
+		 
 		
 		try {
 	        Class c = MediaPlayer.class;
@@ -285,6 +291,24 @@ public class AudioControlDetails implements Action {
 
 		return Result.successResult();
 	}
+	
+	private int computeEnergy(byte[] data, boolean unsigned) {
+        int energy = 0;
+        if (data.length != 0) {
+            for (int i = 0; i < data.length; i++) {
+                int tmp;
+                // convert from unsigned 8 bit to signed 16 bit
+                if (unsigned) {
+                    tmp = ((int)data[i] & 0xFF) - 128;
+                } else {
+                    tmp = (int)data[i];
+                }
+                energy += tmp*tmp;
+            }
+            energy /= data.length;
+        }
+        return energy;
+    }
 
 	@Override
 	public String key() {
