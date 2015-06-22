@@ -1,3 +1,21 @@
+0.5.11
+      Change the way Calabash (re)signs applications. Use the encryption
+      of the supplied keystore, and always use SHA1 as the digest
+      algorithm.
+
+0.5.10
+      Fix building and signing not working if the language of the
+      host computer was not English.
+
+0.5.9
+      Fix crosswalk queries giving wrong coordinates.
+
+      Fix client rescuing `Exceptions`
+
+      Support signing with DSA certificates
+
+      Support indexes in css/xpath queries.
+
 0.5.8
       Handle `embed` if Calabash Android was 'included' instead of added
       to the Cucumber World
