@@ -1,4 +1,4 @@
-package sh.calaba.instrumentationbackend.actions.wifi;
+package sh.calaba.instrumentationbackend.actions.system;
 
 import android.content.Context;
 import android.net.wifi.WifiManager;
