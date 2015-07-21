@@ -11,6 +11,7 @@ public class Wifi implements Action {
 
 	@Override
 	public Result execute(String... args) {
+		WifiManager wifiManager = (WifiManager) InstrumentationBackend.solo.getCurrentActivity().getSystemService(Context.WIFI_SERVICE);
 		if (args.length == 0) {
 			if(wifiManager.isWifiEnabled())
 				return new Result(true, "enabled");
@@ -19,7 +20,6 @@ public class Wifi implements Action {
 		}
 
 		String command = args[0];
-		WifiManager wifiManager = (WifiManager) InstrumentationBackend.solo.getCurrentActivity().getSystemService(Context.WIFI_SERVICE);
 
 		if(command.equals("enable"))
 		{
