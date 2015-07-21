@@ -13,6 +13,13 @@ public class Wifi implements Action {
 	public Result execute(String... args) {
 		String command = args[0];
 		WifiManager wifiManager = (WifiManager) InstrumentationBackend.solo.getCurrentActivity().getSystemService(Context.WIFI_SERVICE);
+
+		if (args.length == 0) {
+			if(wifiManager.isWifiEnabled())
+				return new Result(true, "enabled");
+			else
+				return new Result(true, "disabled");
+		}
 		
 		if(command.equals("enable"))
 		{
