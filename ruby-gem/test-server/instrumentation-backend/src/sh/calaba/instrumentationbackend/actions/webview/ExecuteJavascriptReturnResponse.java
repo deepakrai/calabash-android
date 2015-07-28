@@ -41,8 +41,7 @@ public class ExecuteJavascriptReturnResponse implements Action {
 			+ " } "
 			+ "})()";
 
-System.out.println("DRAI DRAI DRAI DRAI DRAI DRAI DRAI DRAI DRAI DRAI DRAI DRAI DRAI DRAI DRAI DRAI DRAI DRAI DRAI DRAI DRAI DRAI DRAI DRAI DRAI DRAI " );
-				System.out.println("execute javascript: " + script);
+				System.out.println("STUDIO Custom Gem - execute javascript : " + script);
 
 				webView.loadUrl(script);
 				webResults.add(ccc.getResult());				
