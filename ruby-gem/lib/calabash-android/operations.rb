@@ -11,14 +11,23 @@ require 'calabash-android/helpers'
 require 'calabash-android/environment_helpers'
 require 'calabash-android/text_helpers'
 require 'calabash-android/touch_helpers'
+require 'calabash-android/drag_helpers'
 require 'calabash-android/wait_helpers'
 require 'calabash-android/version'
 require 'calabash-android/env'
+require 'calabash-android/environment'
+require 'calabash-android/dot_dir'
+require 'calabash-android/logging'
+require 'calabash-android/store/preferences'
+require 'calabash-android/usage_tracker'
+require 'calabash-android/dependencies'
 require 'retriable'
 require 'cucumber'
 require 'date'
 require 'time'
+require 'shellwords'
 
+Calabash::Android::Dependencies.setup
 
 module Calabash module Android
 
@@ -27,6 +36,7 @@ module Calabash module Android
     include Calabash::Android::TextHelpers
     include Calabash::Android::TouchHelpers
     include Calabash::Android::WaitHelpers
+    include Calabash::Android::DragHelpers
 
     def self.extended(base)
       if (class << base; included_modules.map(&:to_s).include?('Cucumber::RbSupport::RbWorld'); end)
@@ -40,7 +50,7 @@ module Calabash module Android
     end
 
     def current_activity
-      `#{default_device.adb_command} shell dumpsys window windows`.each_line.grep(/mFocusedApp.+[\.\/]([^.\s\/\}]+)/){$1}.first
+      `#{default_device.adb_command} shell dumpsys window windows`.force_encoding('UTF-8').each_line.grep(/mFocusedApp.+[\.\/]([^.\s\/\}]+)/){$1}.first
     end
 
     def log(message)
@@ -289,6 +299,10 @@ module Calabash module Android
         log `#{forward_cmd}`
       end
 
+      def _sdk_version
+        `#{adb_command} shell getprop ro.build.version.sdk`.to_i
+      end
+
       def reinstall_apps
         uninstall_app(package_name(@app_path))
         uninstall_app(package_name(@test_server_path))
@@ -302,7 +316,12 @@ module Calabash module Android
       end
 
       def install_app(app_path)
-        cmd = "#{adb_command} install \"#{app_path}\""
+        if _sdk_version >= 23
+          cmd = "#{adb_command} install -g \"#{app_path}\""
+        else
+          cmd = "#{adb_command} install \"#{app_path}\""
+        end
+
         log "Installing: #{app_path}"
         result = `#{cmd}`
         log result
@@ -316,7 +335,12 @@ module Calabash module Android
       end
 
       def update_app(app_path)
-        cmd = "#{adb_command} install -r \"#{app_path}\""
+        if _sdk_version >= 23
+          cmd = "#{adb_command} install -rg \"#{app_path}\""
+        else
+          cmd = "#{adb_command} install -r \"#{app_path}\""
+        end
+
         log "Updating: #{app_path}"
         result = `#{cmd}`
         log "result: #{result}"
@@ -397,6 +421,25 @@ module Calabash module Android
         end
       end
 
+      def http_put(path, data = {}, options = {})
+        begin
+
+          configure_http(@http, options)
+          make_http_request(
+              :method => :put,
+              :body => data,
+              :uri => url_for(path),
+              :header => {"Content-Type" => "application/octet-stream"})
+
+        rescue HTTPClient::TimeoutError,
+            HTTPClient::KeepAliveDisconnected,
+            Errno::ECONNREFUSED, Errno::ECONNRESET, Errno::ECONNABORTED,
+            Errno::ETIMEDOUT => e
+          log "It looks like your app is no longer running. \nIt could be because of a crash or because your test script shut it down."
+          raise e
+        end
+      end
+
       def set_http(http)
         @http = http
       end
@@ -427,6 +470,8 @@ module Calabash module Android
 
           response = if options[:method] == :post
                        @http.post(options[:uri], options)
+                     elsif options[:method] == :put
+                       @http.put(options[:uri], options)
                      else
                        @http.get(options[:uri], options)
                      end
@@ -515,7 +560,7 @@ module Calabash module Android
       end
 
       def adb_command
-        "#{Env.adb_path} -s #{serial}"
+        "\"#{Calabash::Android::Dependencies.adb_path}\" -s #{serial}"
       end
 
       def default_serial
@@ -552,7 +597,7 @@ module Calabash module Android
       end
 
       def connected_devices
-        lines = `#{Env.adb_path} devices`.split("\n")
+        lines = `"#{Calabash::Android::Dependencies.adb_path}" devices`.split("\n")
         start_index = lines.index{ |x| x =~ /List of devices attached/ } + 1
         lines[start_index..-1].collect { |l| l.split("\t").first }
       end
@@ -613,12 +658,12 @@ module Calabash module Android
         log cmd
         raise "Could not execute command to start test server" unless system("#{cmd} 2>&1")
 
-        Retriable.retriable :tries => 10, :interval => 1 do
+        Retriable.retriable :tries => 100, :interval => 0.1 do
           raise "App did not start" unless app_running?
         end
 
         begin
-          Retriable.retriable :tries => 10, :interval => 3 do
+          Retriable.retriable :tries => 300, :interval => 0.1 do
             log "Checking if instrumentation backend is ready"
 
             log "Is app running? #{app_running?}"
@@ -664,6 +709,11 @@ module Calabash module Android
         end
 
         log("Client and server versions match (client: #{client_version}, server: #{server_version}). Proceeding...")
+
+        # What is Calabash tracking? Read this post for information
+        # No private data (like ip addresses) are collected
+        # https://github.com/calabash/calabash-android/issues/655
+        Calabash::Android::UsageTracker.new.post_usage_async
       end
 
       def shutdown_test_server
@@ -740,7 +790,8 @@ module Calabash module Android
           params = hash.map {|k,v| "-e \"#{k}\" \"#{v}\""}.join(" ")
 
           logcat_id = get_logcat_id()
-          cmd = "#{adb_command} shell am instrument -e logcat #{logcat_id} -e name \"#{name}\" #{params} #{package_name(@test_server_path)}/sh.calaba.instrumentationbackend.SetPreferences"
+          am_cmd = Shellwords.escape("am instrument -e logcat #{logcat_id} -e name \"#{name}\" #{params} #{package_name(@test_server_path)}/sh.calaba.instrumentationbackend.SetPreferences")
+          cmd = "#{adb_command} shell #{am_cmd}"
 
           raise "Could not set preferences" unless system(cmd)
 
@@ -845,6 +896,24 @@ module Calabash module Android
       default_device.http(path, data, options)
     end
 
+    def http_put(path, data = {}, options = {})
+      default_device.http_put(path, data, options)
+    end
+
+    # @return [String] The path of the uploaded file on the device
+    def upload_file(file_path)
+      name = File.basename(file_path)
+      device_tmp_path = http_put('/add-file', File.binread(file_path))
+      http('/move-cache-file-to-public', {from: device_tmp_path, name: name})
+    end
+
+    # @param [String] file_path Path of the file to load (.apk or .jar)
+    # @param [Array<String>] classes A list of classes to load from the file
+    def load_dylib(file_path, classes = [])
+      uploaded_file = upload_file(file_path)
+      http('/load-dylib', {path: uploaded_file, classes: classes})
+    end
+
     def html(q)
       query(q).map {|e| e['html']}
     end
@@ -855,6 +924,8 @@ module Calabash module Android
     end
 
     def press_user_action_button(action_name=nil)
+      wait_for_keyboard
+
       if action_name.nil?
         perform_action("press_user_action_button")
       else

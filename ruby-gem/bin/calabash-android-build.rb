@@ -22,7 +22,7 @@ def calabash_build(app)
 
     puts ""
     puts "Notice that resigning an app might break some functionality."
-    puts "Getting a copy of the certificate used when the app was build will in general be more reliable."
+    puts "Getting a copy of the certificate used when the app was built will in general be more reliable."
 
     exit 1
   end
@@ -31,12 +31,13 @@ def calabash_build(app)
   FileUtils.mkdir_p File.dirname(test_server_file_name) unless File.exist? File.dirname(test_server_file_name)
 
   unsigned_test_apk = File.join(File.dirname(__FILE__), '..', 'lib/calabash-android/lib/TestServer.apk')
+  test_server_manifest = File.join(File.dirname(__FILE__), '..', 'lib', 'calabash-android', 'lib', 'AndroidManifest.xml')
 
   android_platform = Env.android_platform_path
   Dir.mktmpdir do |workspace_dir|
     Dir.chdir(workspace_dir) do
       FileUtils.cp(unsigned_test_apk, "TestServer.apk")
-      FileUtils.cp(File.join(File.dirname(__FILE__), '..', 'test-server/AndroidManifest.xml'), "AndroidManifest.xml")
+      FileUtils.cp(test_server_manifest, "AndroidManifest.xml")
 
       unless system %Q{"#{RbConfig.ruby}" -pi.bak -e "gsub(/#targetPackage#/, '#{package_name(app)}')" AndroidManifest.xml}
         raise "Could not replace package name in manifest"
@@ -46,12 +47,23 @@ def calabash_build(app)
         raise "Could not replace test package name in manifest"
       end
 
-      unless system %Q{"#{Env.tools_dir}/aapt" package -M AndroidManifest.xml  -I "#{android_platform}/android.jar" -F dummy.apk}
+      unless system %Q{"#{Calabash::Android::Dependencies.aapt_path}" package -M AndroidManifest.xml  -I "#{android_platform}/android.jar" -F dummy.apk}
         raise "Could not create dummy.apk"
       end
 
       Zip::File.new("dummy.apk").extract("AndroidManifest.xml","customAndroidManifest.xml")
       Zip::File.open("TestServer.apk") do |zip_file|
+        begin
+          check_file("AndroidManifest.xml")
+          manifest_exists = true
+        rescue
+          manifest_exists = false
+        end
+
+        if manifest_exists
+          zip_file.remove("AndroidManifest.xml")
+        end
+
         zip_file.add("AndroidManifest.xml", "customAndroidManifest.xml")
       end
     end

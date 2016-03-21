@@ -1,0 +1,28 @@
+# Run on linux
+language: ruby
+
+# Container based: faster
+sudo: false
+
+rvm:
+  - 2.0.0
+  - 2.1.2
+  - 2.2.3
+
+env:
+  - CI_NO_ANDROID_RUNTIME=1
+
+script:
+  - bin/ci/travis/run.sh
+
+notifications:
+  email:
+    recipients:
+      - joshua.moody@xamarin.com
+      - chris.fuentes@xamarin.com
+      - tobias.roikjer@xamarin.com
+    on_success: change
+    on_failure: always
+  slack:
+    rooms:
+      secure: fZynvMX0+leWS5FRv8aDaMGhV5dbxGhs3ed6slhLfB6oEUlS9u+VGT1jZuKCSODW4E4Ao2xUziVdRwe/cCIYkgbuIlhJtb/gUI0lIlx7bBC17/8uydFcthukA/KYw8kyArWZkEyC+eixQhixju3BUYAylbepgRtA62DUnbxyh5Q=
