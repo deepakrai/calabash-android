@@ -26,11 +26,7 @@ module Calabash
 
         sleep(args.fetch(:hang_time))
         monkey_touch(:up, to_x, to_y)
-<<<<<<< HEAD
-=======
-
         kill_existing_monkey_processes
->>>>>>> upstream/master
       end
 
       def get_monkey_port
@@ -70,10 +66,7 @@ module Calabash
       end
 
       def kill_monkey_processes_on_device
-<<<<<<< HEAD
-=======
         perform_action('send_tcp', @@monkey_port, "quit", true) unless @@monkey_port.nil?
->>>>>>> upstream/master
         existing_monkey_pids.each do |pid|
           `#{adb_command} shell kill -9 #{pid}`
         end
@@ -111,10 +104,7 @@ module Calabash
         start_monkey if should_start_monkey
         monkey_touch(:down, x, y)
         monkey_touch(:up, x, y)
-<<<<<<< HEAD
-=======
         kill_existing_monkey_processes
->>>>>>> upstream/master
       end
 
       def monkey_touch(touch_type, x, y)
